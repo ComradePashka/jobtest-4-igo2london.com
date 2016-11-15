@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="af05e117-f489-4395-8a7e-422da583ef6b" name="mchost" url="http://178.208.76.156/jobtest-4-igo2london.com">
+        <fileTransfer host="178.208.76.156" port="22" rootFolder="/var/www/html/jobtest-4-igo2london.com" accessType="SFTP" password="dfefdf9fdffcdffbdfdddfcfdf93dff2dfe0dfd3df93dfc4df99dffddf93" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
