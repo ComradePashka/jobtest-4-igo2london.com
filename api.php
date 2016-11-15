@@ -63,12 +63,15 @@ switch($method) {
         if (!$id || !$field || !$value) {
             echo json_encode(['status' => 'error', 'message' => 'variables not defined']);
         } else {
-            if ($field = 'name') $query = "UPDATE `tree` SET $field='$value', url='" . rus2translit($value). "' WHERE id=$id";
+            if ($field == 'name') {
+                $url = rus2translit($value);
+                $query = "UPDATE `tree` SET $field='$value', url='$url' WHERE id=$id";
+            }
             else $query = "UPDATE `tree` SET $field='$value' WHERE id=$id";
 
             $result = $connection->query($query);
             if ($result) {
-                echo json_encode(['status' => 'Ok', 'field' => $field, 'value' => $value]);
+                echo json_encode(['status' => 'Ok', 'field' => $field, 'value' => $value, 'url' => $url]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => $result->errorInfo()]);
             }

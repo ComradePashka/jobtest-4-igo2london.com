@@ -35,7 +35,7 @@ function getSortedNodes($pid = 0, $level = 0) {
     $result = $connection->query("SELECT * FROM `tree` WHERE pid=$pid ORDER BY $order $sort");
     foreach ($result as $row) {
         $hasChildren = nodeHasChildren($row['id']);
-        $ret[] = ['id' => $row['id'], 'name' => $row['name'], 'k' => $row['k'], 'level' => $level, 'hasChildren' => $hasChildren];
+        $ret[] = ['id' => $row['id'], 'name' => $row['name'], 'k' => $row['k'], 'url' => $row['url'], 'level' => $level, 'hasChildren' => $hasChildren];
         if ($hasChildren) {
             $ret = array_merge($ret, getSortedNodes($row['id'], $level + 1));
         }
@@ -75,6 +75,7 @@ catch (PDOException $e) {
                     .done(function (data, text, xhr) {
                         console.log('ok!', data, text, xhr);
                         $(target).html(data.value);
+                        if (data.url != null) $(target).parent().children().find('a').attr('href', data.url);
                     })
                     .fail(function (xhr, status) {
                         console.log('fail:', xhr, status);
@@ -98,12 +99,14 @@ echo "<table><tr>";
 echo "<th><a href='?order=id&sort=$sortInverted'>id</a>&nbsp;</th>";
 echo "<th><a href='?order=name&sort=$sortInverted'>name</a>&nbsp;</th>";
 echo "<th><a href='?order=k&sort=$sortInverted'>k</a>&nbsp;</th>";
+echo "<th>url</th>";
 echo "</tr>";
 foreach (getSortedNodes() as $row) {
     $class = $row['hasChildren']?'node':'doc';
     echo "<tr><td>{$row['id']}</td>
 <td class='editable $class' style='padding-left: " . $row['level'] * 16 . "px' data-id='{$row['id']}' data-field='name'>{$row['name']}</td>
-<td class='editable' data-id='{$row['id']}' data-field='k'>{$row['k']}</td></tr>";
+<td class='editable' data-id='{$row['id']}' data-field='k'>{$row['k']}</td>
+<td><a href='{$row['url']}'>url</a></td></tr>";
 }
 echo "</table>";
 ?>
