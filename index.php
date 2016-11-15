@@ -64,8 +64,9 @@ catch (PDOException $e) {
         jQuery(document).ready(function () {
             $('.editable').dblclick(function (e) {
                 target = $(e.target);
-//                $(target).content = "";
-                xedit = $("<input type='text' value='" + e.target.textContent + "' data-id='" + target.data('id') + "' data-field='" + target.data('field') + "'/>").appendTo(target);
+                oldValue = $(target).html();
+                $(target).html("");
+                xedit = $("<input type='text' value='" + oldValue + "' data-id='" + target.data('id') + "' data-field='" + target.data('field') + "'/>").appendTo(target);
                 $(xedit).focus();
                 $(xedit).focusout(function (e) {
                     $.ajax({
@@ -95,20 +96,27 @@ try {
     echo "Таблица БД не проинициализированна. <a href='db.php'>DB Tools</a>";
 }
 
-echo "<table><tr>";
-echo "<th><a href='?order=id&sort=$sortInverted'>id</a>&nbsp;</th>";
-echo "<th><a href='?order=name&sort=$sortInverted'>name</a>&nbsp;</th>";
-echo "<th><a href='?order=k&sort=$sortInverted'>k</a>&nbsp;</th>";
-echo "<th>url</th>";
-echo "</tr>";
+echo "<table>
+<tr>
+<th><a href='?order=id&sort=$sortInverted'>id</a>&nbsp;</th>
+<th><a href='?order=name&sort=$sortInverted'>name</a>&nbsp;</th>
+<th><a href='?order=k&sort=$sortInverted'>k</a>&nbsp;</th>
+<th>url</th>
+</tr>";
+
 foreach (getSortedNodes() as $row) {
     $class = $row['hasChildren']?'node':'doc';
-    echo "<tr><td>{$row['id']}</td>
+    echo "
+<tr>
+<td>{$row['id']}</td>
 <td class='editable $class' style='padding-left: " . $row['level'] * 16 . "px' data-id='{$row['id']}' data-field='name'>{$row['name']}</td>
 <td class='editable' data-id='{$row['id']}' data-field='k'>{$row['k']}</td>
-<td><a href='{$row['url']}'>url</a></td></tr>";
+<td><a href='{$row['url']}'>url</a></td>
+</tr>";
 }
-echo "</table>";
+echo "
+</table>
+";
 ?>
 </body>
 </html>
